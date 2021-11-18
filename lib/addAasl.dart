@@ -32,7 +32,7 @@ Future<SDModel>? _futHSModel;
 double? lat, long;
 
 class _AddAaslState extends State<AddAasl> {
-  PickedFile? uploadImage;
+  XFile? uploadImage;
   final _nameArabicController = TextEditingController();
   final _nameEnglishController = TextEditingController();
   final _priceController = TextEditingController();
@@ -88,29 +88,45 @@ class _AddAaslState extends State<AddAasl> {
       });
   }
 
-  Future<String> uploadImagefun() async {
-    var request = http.MultipartRequest('POST', Uri.parse(uploadImageUrl));
+  // var request = http.MultipartRequest('POST', Uri.parse(uploadImageUrl));
+  // request.files
+  //     .add(await http.MultipartFile.fromPath('image', uploadImage!.path));
+  // var res = await request.send();
+  // print("ssssssssssssssssssssssssssssssss-${res.reasonPhrase!}");
+  // return res.reasonPhrase!;
+  Future<void> uploadImagefun() async {
+    var request = http.MultipartRequest(
+        'POST',
+        Uri.parse(
+            'http://faragmosa-001-site16.itempurl.com/api/Uploader/upload/AssetImages'));
     request.files
-        .add(await http.MultipartFile.fromPath('image', uploadImage!.path));
-    var res = await request.send();
-    print("ssssssssssssssssssssssssssssssss-${res.reasonPhrase!}");
-    return res.reasonPhrase!;
+        .add(await http.MultipartFile.fromPath('file', '${uploadImage!.path}'));
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    } else {
+      print(
+          "ssssssssssssssssssssss response.reasonPhrase:${response.reasonPhrase}");
+    }
   }
 
   Future<SDModel> saveData(
-      String assetId,
-      String assetNameAr,
-      String assetNameEn,
-      String classificationId,
-      String assetBarcode,
-      String purchaseDate,
-      double purchasePrice,
-      double latitude,
-      double longitude,
-      String assetDescription,
-      String qrcode,
-      String supplierId,
-      String locationId) async {
+    String assetId,
+    String assetNameAr,
+    String assetNameEn,
+    String classificationId,
+    String assetBarcode,
+    String purchaseDate,
+    double purchasePrice,
+    double latitude,
+    double longitude,
+    String assetDescription,
+    String qrcode,
+    String supplierId,
+    String locationId,
+  ) async {
     final assetsData = {
       "AssetId": assetId,
       "AssetNameAr": assetNameAr,
@@ -292,12 +308,22 @@ class _AddAaslState extends State<AddAasl> {
   }
 
   Future<void> chooseImage() async {
-    var choosedImage =
-        await ImagePicker.platform.pickImage(source: ImageSource.gallery);
-    print(choosedImage!.path);
+    // var choosedImage =
+    //     await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+    // print(choosedImage!.path);
+    // setState(() {
+    //   uploadImage = choosedImage as XFile?;
+    //   print(uploadImage!.path);
+    // });
+    final ImagePicker _picker = ImagePicker();
+    // Pick an image
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    print("sssssssssssssssssssssssImagePath: ${image!.path}");
+    // Capture a photo
     setState(() {
-      uploadImage = choosedImage;
-      print(uploadImage!.path);
+      uploadImage = image;
+      print(
+          "ssssssssssssssssssssssssssssssss UploadImagePath: ${uploadImage!.path}");
     });
   }
 
@@ -606,6 +632,49 @@ class _AddAaslState extends State<AddAasl> {
                           padding: const EdgeInsets.all(10.0),
                           child: Container(
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                RaisedButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Text(
+                                    LocaleKeys.ChooseImage.tr(),
+                                    style: TextStyle(
+                                        color: mBackgroundColor,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  onPressed: () {
+                                    chooseImage();
+                                  },
+                                  color: Colors.green,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                RaisedButton(
+                                  child: Text(
+                                    LocaleKeys.UploadImage.tr(),
+                                    style: TextStyle(
+                                        color: mBackgroundColor,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  color: Colors.green,
+                                  onPressed: () {
+                                    uploadImagefun();
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Container(
+                            child: Row(
                               children: <Widget>[
                                 Expanded(
                                   child: RaisedButton(
@@ -699,25 +768,6 @@ class _AddAaslState extends State<AddAasl> {
                                     },
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Column(
-                                  children: [
-                                    RaisedButton(
-                                      onPressed: () {
-                                        chooseImage();
-                                      },
-                                      child: Text('Pick An Image'),
-                                    ),
-                                    RaisedButton(
-                                      onPressed: () {
-                                        uploadImagefun();
-                                      },
-                                      child: Text('Pick An Imagessss'),
-                                    ),
-                                  ],
-                                )
                               ],
                             ),
                           ),

@@ -29,6 +29,8 @@
     "AssetnameAr" : "Asset Name Arabic",
     "AssetnameEn" : "Asset Name English",
     "Price" : "Price",
+    "ChooseImage": "Choose Image",
+    "UploadImage": "Upload Image",
     "Date" : "Date",
     "Classification" : "Classification",
     "Supplier" : "Supplier",
