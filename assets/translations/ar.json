@@ -20,6 +20,8 @@
     "ChooseBoard" : "أختـر اللجــنه",
     "ChooseImage": "أختر الصورة",
     "UploadImage": "أرفع الصورة",
+    "ImageChosen": "تم أختيار الصورة",
+    "ImageUploaded": "تم رفع الصورة",
     "AddNotes" : "أضـف ملاحــظات",
     "StartGaard" : "أبـدأ الجــرد",
     "AssetName" : "أســم الأصــل",

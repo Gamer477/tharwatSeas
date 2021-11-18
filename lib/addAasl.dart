@@ -645,7 +645,9 @@ class _AddAaslState extends State<AddAasl> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   onPressed: () {
-                                    chooseImage();
+                                    chooseImage().then((value) {
+                                      showToast(LocaleKeys.ImageChosen.tr());
+                                    });
                                   },
                                   color: Colors.green,
                                 ),
@@ -664,7 +666,9 @@ class _AddAaslState extends State<AddAasl> {
                                   ),
                                   color: Colors.green,
                                   onPressed: () {
-                                    uploadImagefun();
+                                    uploadImagefun().then((value) {
+                                      showToast(LocaleKeys.ImageUploaded.tr());
+                                    });
                                   },
                                 ),
                               ],

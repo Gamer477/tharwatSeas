@@ -47,4 +47,6 @@ abstract class LocaleKeys {
   static const Back = 'Back';
   static const ChooseImage = 'ChooseImage';
   static const UploadImage = 'UploadImage';
+  static const ImageUploaded = 'ImageUploaded';
+  static const ImageChosen = 'ImageChosen';
 }
